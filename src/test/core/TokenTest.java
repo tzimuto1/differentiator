@@ -40,9 +40,6 @@ public class TokenTest {
 		String expr2 = "*";
 		Token token1 = new Token(Type.MULTI, expr1);
 		Token token2 = new Token(Type.MULTI, expr2);
-		System.out.println(token1.getValue().hashCode() + " " + token2.getValue().hashCode());
-		System.out.println(expr1 == expr2);
-		System.out.println(expr1.equals(expr2));
 		assertTrue(token1.equals(token2));
 	}
 	

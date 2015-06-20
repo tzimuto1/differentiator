@@ -1,7 +1,5 @@
 package core;
 
-
-
 /**
  * 
  * @author tzimuto1

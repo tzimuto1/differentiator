@@ -14,13 +14,6 @@ import core.Token.Type;
 
 public class Lexer {
 	private String expression;
-//	private static final Pattern exprRegex=Pattern.compile(
-//	            "X:\\s*\\d+|T:.+|C:.+|L:\\s*\\d+\\/\\d+|M:\\s*((C\\|)|[C]|[\\d+][\\/][\\d+])|Q:\\s*\\d+|V:\\s*.+|K:\\s*([a-gA-G]|z)(#|b)?(m)?|" +
-//	                    "\\(2|\\(3|\\(4|(\\|\\|)|(\\|\\])|(\\|:)|(:\\|)|\\[1|\\[2|\\d*\\/\\d*|[1-9]\\d*|\\||\\s*[a-gA-G]|\\z" +
-//	                    "[\\^\\^?]|[__?]|[=]|'+|,+|\\[|\\]|%.+|\\s+|" + 
-//	                    "[^CDEFGABcdefgabz]|[^0-9]|[^\\/]|[^\\^]|[^_]|[^=]|[^']|[^,]|[^\\|]|[^\\:]|[^\\[]|[^\\]]|[^\\(]|" +
-//	                    "[^%]"); 
-	//PLUS, MINUS, MULT, OPEN_PARENTH, CLOSED_PARENTH, NUMBER, VARIABLE
 	private static final Pattern exprRegex = Pattern.compile(
 			"\\+|\\-|\\*|\\(|\\)|\\d+\\.\\d+|\\d+|[a-zA-Z]+|\\s+|" + 
             "[^\\+]|[^-]|[^\\*]|[^\\(]|[^\\)]|[^\\d]|[^\\.]|[^a-zA-Z]|[^\\s]"
