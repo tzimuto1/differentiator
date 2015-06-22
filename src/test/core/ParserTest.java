@@ -40,37 +40,37 @@ public class ParserTest {
 		assertEquals(expectedExpr.toString(), actualExpr.toString());
 	}
 	
-	@Test(expected = RuntimeException.class)
+	/*@Test(expected = RuntimeException.class)
 	// (x + 3*
 	public void testParseAddVarNumIllegal(){
 		Expression left = new Variable("x");
 		Parser parser = new Parser(new Lexer("3*"));
 		parser.parseAdd(left);
-	}
+	}*/
 	
-	@Test(expected = RuntimeException.class)
+	/*@Test(expected = RuntimeException.class)
 	// (3 + x*
 	public void testParseAddNumVarIllegal(){
 		Expression left = new core.expression.Number("3");
 		Parser parser = new Parser(new Lexer("x*"));
 		parser.parseAdd(left);
-	}
+	}*/
 	
-	@Test(expected = RuntimeException.class)
+	/*@Test(expected = RuntimeException.class)
 	// (x + 3
 	public void testParseAddVarNumEmpty(){
 		Expression left = new Variable("x");
 		Parser parser = new Parser(new Lexer("3"));
 		parser.parseAdd(left);
-	}
+	}*/
 	
-	@Test(expected = RuntimeException.class)
+	/*@Test(expected = RuntimeException.class)
 	// (3 + x
 	public void testParseAddNumVarEmpty(){
 		Expression left = new core.expression.Number("3");
 		Parser parser = new Parser(new Lexer("x"));
 		parser.parseAdd(left);
-	}
+	}*/
 	
 	//  parse() It implicitly covers the parseExpression() method:
 		//  single variable (x), number (3), 2 single-layer expression plus (x + 3), 
@@ -206,6 +206,26 @@ public class ParserTest {
 		Expression actual = parser.parse();
 		
 		String expected = "(((x+(3*4))+3)-3)";
+		assertEquals(expected, actual.toString());
+	}
+	
+	@Test
+	//(((x)))
+	public void testParseExtraParens1(){
+		Parser parser = new Parser(new Lexer("(((x)))"));
+		Expression actual = parser.parse();
+		
+		String expected = "x";
+		assertEquals(expected, actual.toString());
+	}
+	
+	@Test
+	//((x +3))
+	public void testParseExtraParens2(){
+		Parser parser = new Parser(new Lexer("((x + 3))"));
+		Expression actual = parser.parse();
+		
+		String expected = "(x+3)";
 		assertEquals(expected, actual.toString());
 	}
 	

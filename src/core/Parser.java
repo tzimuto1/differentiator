@@ -44,17 +44,24 @@ public class Parser {
 	 */
 	private Expression parseExpression(){
 		Expression left;
+		Expression parsedExpression;
 		while(iter.hasNext()){
 			Token token = iter.next();
 			if (token.getType() == Type.OPEN_PARENTH){
 				left = parseExpression();
-				return handleLeftTerminal(left);
+				parsedExpression = handleLeftTerminal(left);
+				if (isExpressionTerminated()) return parsedExpression;
+				else throw new RuntimeException("The expression format invalid");
 			} else if (token.getType() == Type.VARIABLE){
 				left = new Variable(token.getValue());
-				return handleLeftTerminal(left);
+				parsedExpression = handleLeftTerminal(left);
+				if (isExpressionTerminated()) return parsedExpression;
+				else throw new RuntimeException("The expression format invalid");
 			} else if (token.getType() == Type.NUMBER){
 				left = new core.expression.Number(token.getValue());
-				return handleLeftTerminal(left);
+				parsedExpression = handleLeftTerminal(left);
+				if (isExpressionTerminated()) return parsedExpression;
+				else throw new RuntimeException("The expression format invalid");
 			}
 		}
 		return null;
@@ -62,13 +69,14 @@ public class Parser {
 	
 	/**
 	 * 
-	 * @param left the already parsed number of variable
+	 * @param left the already parsed number or variable
 	 * @return Expression
 	 */
 	private Expression handleLeftTerminal(Expression left){
 		if (iter.hasNext()){
 			Token nextToken = iter.next();
 			if (nextToken.getType() == Type.CLOSED_PARENTH){
+				iter.previous();
 				return left;
 			} else if (nextToken.getType() == Type.PLUS){
 				return parseAdd(left);
@@ -76,7 +84,7 @@ public class Parser {
 				return parseSubtract(left);
 			} else if (nextToken.getType() == Type.MULTI){
 				return parseMultiply(left);
-			} 
+			} else throw new RuntimeException("The expression format invalid");
 		}
 		throw new RuntimeException("The expression format invalid");
 	}
@@ -118,18 +126,17 @@ public class Parser {
 		while(iter.hasNext()){
 			Token token = iter.next();
 			if (token.getType() == Type.NUMBER){
-				if (isExpressionTerminated())return new core.expression.Number(token.getValue());
-				else throw new RuntimeException("The expression format invalid");
+				return new core.expression.Number(token.getValue());
 			} else if (token.getType() == Type.VARIABLE){
-				if (isExpressionTerminated()) return new Variable(token.getValue());
-				else throw new RuntimeException("The expression format invalid");
+				return new Variable(token.getValue());
 			} else if (token.getType() == Type.OPEN_PARENTH){
 				return parseExpression();
-			}
-			//TODO test other parts of the expression
+			} else throw new RuntimeException("The expression format invalid");
+			
 		}
 		throw new RuntimeException("The expression format invalid");
 	}
+	
 	/**
 	 * Determines if the current expression is correctly terminated. A valid expression is
 	 * is terminated by a parenthesis 
