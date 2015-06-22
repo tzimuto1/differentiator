@@ -46,7 +46,10 @@ public class Parser {
 		Expression left;
 		while(iter.hasNext()){
 			Token token = iter.next();
-			if (token.getType() == Type.VARIABLE){
+			if (token.getType() == Type.OPEN_PARENTH){
+				left = parseExpression();
+				return handleLeftTerminal(left);
+			} else if (token.getType() == Type.VARIABLE){
 				left = new Variable(token.getValue());
 				return handleLeftTerminal(left);
 			} else if (token.getType() == Type.NUMBER){
@@ -120,6 +123,8 @@ public class Parser {
 			} else if (token.getType() == Type.VARIABLE){
 				if (isExpressionTerminated()) return new Variable(token.getValue());
 				else throw new RuntimeException("The expression format invalid");
+			} else if (token.getType() == Type.OPEN_PARENTH){
+				return parseExpression();
 			}
 			//TODO test other parts of the expression
 		}

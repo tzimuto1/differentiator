@@ -76,7 +76,7 @@ public class ParserTest {
 		//  single variable (x), number (3), 2 single-layer expression plus (x + 3), 
 	    //  2 single-layer expression subtract (x - 3), 2 single-layer expression multi (x * 3)
 		//	double layer expression [(x + (x - 3)), ((x-3) + 2), ((x +1) + (x + 2))],
-	    //deeply nested expression (((x + (3 * 4)) + 3) -3)
+	    //	deeply nested expression (((x + (3 * 4)) + 3) -3)
 		//  unnecessary brackets1 (((x))), unnecessary brackets 2 ((x +3))
 	
 	@Test
@@ -169,7 +169,6 @@ public class ParserTest {
 		assertEquals(expected, actual.toString());
 	}
 	
-//	[(x + (x - 3)), ((x-3) + 2), ((x +1) + (x + 2))],
 	@Test
 	//(x + (x - 3))
 	public void doubleLayerExpression1(){
@@ -177,6 +176,36 @@ public class ParserTest {
 		Expression actual = parser.parse();
 		
 		String expected = "(x+(x-3))";
+		assertEquals(expected, actual.toString());
+	}
+	
+	@Test
+	//((x - 3) + x)
+	public void doubleLayerExpression2(){
+		Parser parser = new Parser(new Lexer("((x - 3) + x)"));
+		Expression actual = parser.parse();
+		
+		String expected = "((x-3)+x)";
+		assertEquals(expected, actual.toString());
+	}
+	
+	@Test
+	//((x +1) + (x + 2))
+	public void doubleLayerExpression3(){
+		Parser parser = new Parser(new Lexer("((x +1) + (x + 2))"));
+		Expression actual = parser.parse();
+		
+		String expected = "((x+1)+(x+2))";
+		assertEquals(expected, actual.toString());
+	}
+	
+	@Test
+	//(((x + (3 * 4)) + 3) -3)
+	public void testParseDeeplyNestedEpxression(){
+		Parser parser = new Parser(new Lexer("(((x + (3 * 4)) + 3) -3)"));
+		Expression actual = parser.parse();
+		
+		String expected = "(((x+(3*4))+3)-3)";
 		assertEquals(expected, actual.toString());
 	}
 	
