@@ -13,8 +13,8 @@ import core.expression.*;
  */
 public class Parser {
 	
-	ArrayList<Token> tokens;
-	ListIterator<Token> iter;
+	private ArrayList<Token> tokens;
+	private ListIterator<Token> iter;
 	
 	/**
 	 * The mathematical expression parser

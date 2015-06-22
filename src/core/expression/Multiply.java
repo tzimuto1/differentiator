@@ -15,9 +15,10 @@ public class Multiply implements Expression {
 	}
 	
 	@Override
-	public Expression differentiate() {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression differentiate(String x) {
+		Multiply diffLeft = new Multiply(left, right.differentiate(x));
+		Multiply diffRight = new Multiply(right, left.differentiate(x));
+		return new Add(diffLeft, diffRight);
 	}
 	
 	@Override

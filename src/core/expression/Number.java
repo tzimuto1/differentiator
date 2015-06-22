@@ -7,7 +7,7 @@ package core.expression;
  */
 public class Number implements Expression {
 	
-	String number;
+	private final String number;
 	/**
 	 * Representation of a number
 	 * @param number the number represented by this
@@ -17,8 +17,7 @@ public class Number implements Expression {
 	}
 
 	@Override
-	public Expression differentiate() {
-		// TODO Auto-generated method stub
+	public Expression differentiate(String x) {
 		return new Number("0");
 	}
 	

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import core.expression.Expression;
 import core.expression.Subtract;
 import core.expression.Variable;
 
@@ -25,7 +26,7 @@ public class SubtractTest {
 	}
 	
 	@Test
-	public void testToStringNestedVarAdd(){
+	public void testToStringNestedVarSub(){
 		Variable left = new Variable("x");
 		Subtract right = new Subtract(new Variable("x"), new core.expression.Number("3"));
 		Subtract expr = new Subtract(left, right);
@@ -33,10 +34,22 @@ public class SubtractTest {
 	}
 	
 	@Test
-	public void testToStringNestedAdds(){
+	public void testToStringNestedSubs(){
 		Subtract left = new Subtract(new Variable("x"), new core.expression.Number("3"));
 		Subtract right = new Subtract(new Variable("x"), new core.expression.Number("4"));
 		Subtract expr = new Subtract(left, right);
 		assertEquals("((x-3)-(x-4))", expr.toString());
+	}
+	
+//	differentiate()
+	//		x - 1 (covers for the x - x, 1 - x, 1 - 1 cases)
+	@Test 
+	//x-1
+	public void testDifferentiateVarNum(){
+		Variable left = new Variable("x");
+		core.expression.Number right = new core.expression.Number("1");
+		Subtract expr = new Subtract(left, right);
+		Expression diff = expr.differentiate("x");
+		assertEquals("(1-0)", diff.toString());
 	}
 }

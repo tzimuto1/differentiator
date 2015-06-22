@@ -7,7 +7,7 @@ package core.expression;
  */
 public class Variable implements Expression {
 
-	private String variable;
+	private final String variable;
 	
 	/**
 	 * Representation of a Variable expression
@@ -18,9 +18,8 @@ public class Variable implements Expression {
 	}
 	
 	@Override
-	public Expression differentiate() {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression differentiate(String x) {
+		return x.equals(variable) ? new Number("1") : new Number("0");
 	}
 	
 	public String toString(){

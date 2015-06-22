@@ -19,9 +19,8 @@ public class Add implements Expression {
 	}
 	
 	@Override
-	public Expression differentiate() {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression differentiate(String x) {
+		return new Add(left.differentiate(x), right.differentiate(x));
 	}
 	
 	@Override
