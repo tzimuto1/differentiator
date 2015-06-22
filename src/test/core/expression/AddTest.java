@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import core.expression.Add;
 import core.expression.Expression;
+import core.expression.Number;
 import core.expression.Variable;
 
 public class AddTest {

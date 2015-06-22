@@ -41,4 +41,5 @@ public class VariableTest {
 		Expression diff = var.differentiate("x");
 		assertEquals("0", diff.toString());
 	}
+
 }

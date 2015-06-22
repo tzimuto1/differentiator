@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import core.expression.Expression;
+import core.expression.Variable;
 
 public class NumberTest {
 
@@ -39,4 +40,5 @@ public class NumberTest {
 		Expression diff = expr.differentiate("x");
 		assertEquals("0", diff.toString());
 	}
+	
 }
