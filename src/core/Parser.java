@@ -62,9 +62,9 @@ public class Parser {
 				parsedExpression = handleLeftTerminal(left);
 				if (isExpressionTerminated()) return parsedExpression;
 				else throw new RuntimeException("The expression format invalid");
-			}
+			} else throw new RuntimeException("The expression format invalid");
 		}
-		return null;
+		throw new RuntimeException("The expression format invalid");
 	}
 	
 	/**

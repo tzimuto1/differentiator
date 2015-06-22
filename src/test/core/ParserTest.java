@@ -15,7 +15,6 @@ public class ParserTest {
 	//      tests that use the "-" and "*" operators have been left out
 	//		expr = (x+, 3), (3+ x), (x+ 3 illegal, (3+ x illegal, (x + 3, (3 + x
 	
-	//TODO clean up the first set of tests
 	@Test
 	// (x + 3)
 	public void testParseAddVarNum(){
@@ -23,9 +22,9 @@ public class ParserTest {
 		Parser parser = new Parser(new Lexer("3)"));
 		Expression actualExpr = parser.parseAdd(left);
 		//expected
-		Expression expectedExpr = new Add(new Variable("x"), new core.expression.Number("3"));
+		String expected = "(x+3)";
 		//assert
-		assertEquals(expectedExpr.toString(), actualExpr.toString());
+		assertEquals(expected, actualExpr.toString());
 	}
 	
 	@Test
@@ -35,49 +34,22 @@ public class ParserTest {
 		Parser parser = new Parser(new Lexer("x)"));//right part of expression
 		Expression actualExpr = parser.parseAdd(left);
 		//expected
-		Expression expectedExpr = new Add(new core.expression.Number("3"), new Variable("x"));
+		String expected = "(3+x)";
 		//assert
-		assertEquals(expectedExpr.toString(), actualExpr.toString());
+		assertEquals(expected, actualExpr.toString());
 	}
 	
-	/*@Test(expected = RuntimeException.class)
-	// (x + 3*
-	public void testParseAddVarNumIllegal(){
-		Expression left = new Variable("x");
-		Parser parser = new Parser(new Lexer("3*"));
-		parser.parseAdd(left);
-	}*/
-	
-	/*@Test(expected = RuntimeException.class)
-	// (3 + x*
-	public void testParseAddNumVarIllegal(){
-		Expression left = new core.expression.Number("3");
-		Parser parser = new Parser(new Lexer("x*"));
-		parser.parseAdd(left);
-	}*/
-	
-	/*@Test(expected = RuntimeException.class)
-	// (x + 3
-	public void testParseAddVarNumEmpty(){
-		Expression left = new Variable("x");
-		Parser parser = new Parser(new Lexer("3"));
-		parser.parseAdd(left);
-	}*/
-	
-	/*@Test(expected = RuntimeException.class)
-	// (3 + x
-	public void testParseAddNumVarEmpty(){
-		Expression left = new core.expression.Number("3");
-		Parser parser = new Parser(new Lexer("x"));
-		parser.parseAdd(left);
-	}*/
-	
 	//  parse() It implicitly covers the parseExpression() method:
-		//  single variable (x), number (3), 2 single-layer expression plus (x + 3), 
-	    //  2 single-layer expression subtract (x - 3), 2 single-layer expression multi (x * 3)
-		//	double layer expression [(x + (x - 3)), ((x-3) + 2), ((x +1) + (x + 2))],
-	    //	deeply nested expression (((x + (3 * 4)) + 3) -3)
-		//  unnecessary brackets1 (((x))), unnecessary brackets 2 ((x +3))
+	//		LEGAL EXPRESSIONS
+	//  	single variable (x), number (3), 2 single-layer expression plus (x + 3), 
+	//  	2 single-layer expression subtract (x - 3), 2 single-layer expression multi (x * 3)
+	//		double layer expression [(x + (x - 3)), ((x-3) + 2), ((x +1) + (x + 2))],
+	//		deeply nested expression (((x + (3 * 4)) + 3) -3)
+	//  	unnecessary brackets1 (((x))), unnecessary brackets 2 ((x +3))
+	//      ILLEGAL EXPRESSIONS
+	//      single token (, double token (x (3 (+ (),
+	//      missing parens x + 1, unbalanced parens (x + (x +1), 
+	//      missing operator (3x, 
 	
 	@Test
 	// (x)
@@ -229,4 +201,76 @@ public class ParserTest {
 		assertEquals(expected, actual.toString());
 	}
 	
+	//ILLEGAL EXPRESSION
+//  ILLEGAL EXPRESSIONS
+	
+	@Test(expected = RuntimeException.class)
+	//(
+	public void testParseSingleTokenParen(){
+		Parser parser = new Parser(new Lexer("("));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//+
+	public void testParseSingleTokenAdd(){
+		Parser parser = new Parser(new Lexer("+"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(x
+	public void testParseDoubleTokens1(){
+		Parser parser = new Parser(new Lexer("(x"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(3
+	public void testParseDoubleTokens2(){
+		Parser parser = new Parser(new Lexer("(x"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(+
+	public void testParseDoubleTokens3(){
+		Parser parser = new Parser(new Lexer("(+"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//()
+	public void testParseDoubleTokens4(){
+		Parser parser = new Parser(new Lexer("()"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//x+1
+	public void testParseMissingParens1(){
+		Parser parser = new Parser(new Lexer("x+1"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(x+1
+	public void testParseMissingParens2(){
+		Parser parser = new Parser(new Lexer("(x+1"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(x+(x+1)
+	public void testParseMissingParens3(){
+		Parser parser = new Parser(new Lexer("(x+(x+1)"));
+		parser.parse();
+	}
+	
+	@Test(expected = RuntimeException.class)
+	//(x+(x)+1)
+	public void testParseMisplacedParens(){
+		Parser parser = new Parser(new Lexer("(x+(x)+1)"));
+		parser.parse();
+	}
 }
