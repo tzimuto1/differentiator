@@ -49,20 +49,15 @@ public class Parser {
 			Token token = iter.next();
 			if (token.getType() == Type.OPEN_PARENTH){
 				left = parseExpression();
-				parsedExpression = handleLeftTerminal(left);
-				if (isExpressionTerminated()) return parsedExpression;
-				else throw new RuntimeException("The expression format invalid");
 			} else if (token.getType() == Type.VARIABLE){
 				left = new Variable(token.getValue());
-				parsedExpression = handleLeftTerminal(left);
-				if (isExpressionTerminated()) return parsedExpression;
-				else throw new RuntimeException("The expression format invalid");
 			} else if (token.getType() == Type.NUMBER){
 				left = new core.expression.Number(token.getValue());
-				parsedExpression = handleLeftTerminal(left);
-				if (isExpressionTerminated()) return parsedExpression;
-				else throw new RuntimeException("The expression format invalid");
 			} else throw new RuntimeException("The expression format invalid");
+			
+			parsedExpression = handleLeftTerminal(left);
+			if (isExpressionTerminated()) return parsedExpression;
+			else throw new RuntimeException("The expression format invalid");
 		}
 		throw new RuntimeException("The expression format invalid");
 	}
@@ -123,6 +118,7 @@ public class Parser {
 	 * @return Expression
 	 */
 	private Expression parseOperatorHelper(){
+		//TODO eliminate the parseAdd etc. methods
 		while(iter.hasNext()){
 			Token token = iter.next();
 			if (token.getType() == Type.NUMBER){

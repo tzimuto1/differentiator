@@ -1,6 +1,7 @@
 package core.expression;
 
 public class Subtract implements Expression {
+	//FIXME Subtraction not fully supported
 	private final Expression left;
 	private final Expression right;
 	/**
